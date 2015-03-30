@@ -148,7 +148,7 @@ void UpdateStockInfo(STOCKINFONOW_t *stock_in, TOTAL_STOCKINFO_t *TotalStockDesc
     //cout << "size of STOCKINFO_t: " << sizeof(STOCKINFO_t) <<endl;
     //cout << TotalStockDesc->stockamount <<endl;
     //system("PAUSE");
-    while(ind<TotalStockDesc->stockamount){
+    while(ind < TotalStockDesc->stockamount){
         StockInfoNow = (STOCKINFO_t*)(TotalStockDesc->StockBasePtr + ind);//Get the stock now
         j = 0;
         match = 1;
@@ -424,11 +424,11 @@ void UpdateStockInfo(STOCKINFONOW_t *stock_in, TOTAL_STOCKINFO_t *TotalStockDesc
     //... Add new stock here, update StockInfoNow[ind]
     cout << "New Stock Comming: ind:" << TotalStockDesc->stockamount <<endl;
     StockInfoNow = (STOCKINFO_t*)(TotalStockDesc->StockBasePtr + TotalStockDesc->stockamount);
-    #if 0
+#if 0
     cout << "StockInfoNow: " << StockInfoNow << endl;
     cout << &StockInfoNow->ind << endl;
     cout << TotalStockDesc->stockamount << endl;
-    #endif
+#endif
     TotalStockDesc->stockamount++;
     StockInfoNow->ind = TotalStockDesc->stockamount;  //bug!!!
     StockInfoNow->isupdate = 1;//Kaster
@@ -499,23 +499,23 @@ int main()
 
     STOCKINFONOW_t stock_now;
     TotalStockDesc->stockamount = 0;
-    for(y=year_s;y<=year_e;y++){
-        for(m=month_s;m<=month_e;m++){
-            for(d=day_s;d<=day_e;d++){
-                if(m<10 && d<10)
+    for(y = year_s; y <= year_e; y++){
+        for(m = month_s; m <= month_e; m++){
+            for(d = day_s; d <= day_e; d++){
+                if(m < 10 && d < 10)
                     sprintf(filename, "C:\\Works\\20140726YZ\\stock_all_byday\\A112%d0%d0%dALLBUT0999.csv",y,m,d);
-                else if(m<10)
+                else if(m < 10)
                     sprintf(filename, "C:\\Works\\20140726YZ\\stock_all_byday\\A112%d0%d%dALLBUT0999.csv",y,m,d);
-                else if(d<10)
+                else if(d < 10)
                     sprintf(filename, "C:\\Works\\20140726YZ\\stock_all_byday\\A112%d%d0%dALLBUT0999.csv",y,m,d);
                 else
                     sprintf(filename, "C:\\Works\\20140726YZ\\stock_all_byday\\A112%d%d%dALLBUT0999.csv",y,m,d);
 
-                if(m<10 && d<10)
+                if(m < 10 && d < 10)
                     sprintf(filename2, "C:\\Works\\20140726YZ\\exclude_dividend\\TWT49U%d0%d0%d.csv",y,m,d);
-                else if(m<10)
+                else if(m < 10)
                     sprintf(filename2, "C:\\Works\\20140726YZ\\exclude_dividend\\TWT49U%d0%d%d.csv",y,m,d);
-                else if(d<10)
+                else if(d < 10)
                     sprintf(filename2, "C:\\Works\\20140726YZ\\exclude_dividend\\TWT49U%d%d0%d.csv",y,m,d);
                 else
                     sprintf(filename2, "C:\\Works\\20140726YZ\\exclude_dividend\\TWT49U%d%d%d.csv",y,m,d);
@@ -526,8 +526,10 @@ int main()
                 string str_buf, str_buf2, str_buf3;
                 string str_buf_ex;
                 TotalStockDesc->un_gain = 0; //Reset the unrealized gain
-                if(!fin) continue;//cout << "open fail." << endl;
-                else{
+
+                if(!fin) {
+                    continue;//cout << "open fail." << endl;
+                } else {
                     /******************************************************/
                     /*********open the exclude dividend files-s*****************/
                     /*****************************************************/
@@ -535,7 +537,7 @@ int main()
                         //If there is no this file, calldbg
                         cout << "No this file!!" <<endl;
                         system("PAUSE");
-                    }else{
+                    } else {
                         int linetotal = countline(filename2);
                         int ind_now = 0;
                         //cout << y<<m<<d<<endl;
@@ -579,7 +581,7 @@ int main()
                                     TotalStockDesc->exstock[ind_now].bef_ex = atof(str_buf_ex.c_str());
                                     //cout<<str_buf_ex<<endl;
                                     //cout<<TotalStockDesc->exstock[ind_now].bef_ex<<endl;
-                                }else if(j==3){
+                                }else if(j == 3){
                                     //It's the price after exclude dividend
                                     TotalStockDesc->exstock[ind_now].aft_ex = atof(str_buf_ex.c_str());
                                     //cout<<str_buf_ex<<endl;
@@ -609,7 +611,7 @@ int main()
                         TotalStockDesc->islastday = 0;
                     }
                     //bzero(&stock_now, sizeof(STOCKINFONOW_t)); //initialize
-                    while(getline(fin, str_buf)!=NULL){
+                    while(getline(fin, str_buf) != NULL){
                         //cout << str_buf << endl;
                         istringstream stream_ori(str_buf); // for determin phase[0,1,2] using
                         istringstream stream(str_buf);
@@ -625,11 +627,11 @@ int main()
                         }else if(phase == 1){
                             getline(stream_ori, str_buf, ',');
                             if(str_buf[0] != '='){
-                                phase=2; //means that we find 1101, and goto phase 2
+                                phase = 2; //means that we find 1101, and goto phase 2
                                 goto PHASE2;
                             }
-                        PHASE1:
-                            j=0;
+PHASE1:
+                            j = 0;
                             while(getline(stream, str_buf, '\"') != NULL){
                                 if(j == 1){
                                     //eg, we got "0050 "
@@ -662,15 +664,15 @@ int main()
                                     cout << endl;
                                     //system("PAUSE");
 #endif
-                                }else if(j==5){
+                                }else if(j == 5){
                                     //eg, we got "volume"
                                     stock_now.volume = atoi(str_buf.c_str());
-                                    #if trace == 1
+#if trace == 1
                                     cout << "volume: ";
                                     cout << str_buf;
                                     cout << endl;
                                     //system("PAUSE");
-                                    #endif
+#endif
                                 }else if(j == 17){
                                     //eg, we got "price"
                                     stock_now.price = atof(str_buf.c_str());
@@ -779,99 +781,99 @@ PHASE2:
                             stock_now.date.d = d;
                             UpdateStockInfo(&stock_now,TotalStockDesc);
                         }
-                   }
+                    }
 
-                   //Kaster: Change to sell the invalid stock everyday
-                   //Sell the invalid stock
-                   ind = 0;
-                   STOCKINFO_t* StockInfoNow;
+                    //Kaster: Change to sell the invalid stock everyday
+                    //Sell the invalid stock
+                    ind = 0;
+                    STOCKINFO_t* StockInfoNow;
 
-                   while(ind<TotalStockDesc->stockamount){
-                      StockInfoNow = (STOCKINFO_t*)(TotalStockDesc->StockBasePtr + ind);//Get the stock now
-                      if(StockInfoNow->buy_amount && StockInfoNow->isupdate==0){
-                         StockInfoNow->buy_amount--;
-                         TotalStockDesc->stockbuyamount--;
-                         TotalStockDesc->MoneyNeed -= StockInfoNow->price_buy[StockInfoNow->buy_amount].price;
-                         cout << "\t" << StockInfoNow->stockname<<"\t" << StockInfoNow->stockname_ch << "\tINVALID SELL\t"
-                              << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ","
-                              << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ")\t"
-                              << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.y
-                              << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.m
-                              << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.d
-                              << ","
-                              << y
-                              << "/" << m
-                              << "/" << d
-                              << ")\t"
-                              << "un_gain: 0"
-                              << "\tungain_T: " << TotalStockDesc->un_gain
-                              << "\tamount_T:" << TotalStockDesc->stockbuyamount
-                              << endl;
+                    while(ind<TotalStockDesc->stockamount){
+                        StockInfoNow = (STOCKINFO_t*)(TotalStockDesc->StockBasePtr + ind);//Get the stock now
+                        if(StockInfoNow->buy_amount && StockInfoNow->isupdate == 0){
+                            StockInfoNow->buy_amount--;
+                            TotalStockDesc->stockbuyamount--;
+                            TotalStockDesc->MoneyNeed -= StockInfoNow->price_buy[StockInfoNow->buy_amount].price;
+                            cout << "\t" << StockInfoNow->stockname<<"\t" << StockInfoNow->stockname_ch << "\tINVALID SELL\t"
+                                 << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ","
+                                 << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ")\t"
+                                 << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.y
+                                 << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.m
+                                 << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.d
+                                 << ","
+                                 << y
+                                 << "/" << m
+                                 << "/" << d
+                                 << ")\t"
+                                 << "un_gain: 0"
+                                 << "\tungain_T: " << TotalStockDesc->un_gain
+                                 << "\tamount_T:" << TotalStockDesc->stockbuyamount
+                                 << endl;
 
-                         cout << "Stock: " << StockInfoNow->stockname << " Buy Price " << StockInfoNow->price_buy[0].price
-                              << " Date " << StockInfoNow->price_buy[0].date.y << StockInfoNow->price_buy[0].date.m << StockInfoNow->price_buy[0].date.d <<endl;
+                            cout << "Stock: " << StockInfoNow->stockname << " Buy Price " << StockInfoNow->price_buy[0].price
+                                 << " Date " << StockInfoNow->price_buy[0].date.y << StockInfoNow->price_buy[0].date.m << StockInfoNow->price_buy[0].date.d <<endl;
 
-                         f_out_history << "\t" << StockInfoNow->stockname<<"\t" << StockInfoNow->stockname_ch << "\tINVALID SELL\t"
-                                       << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ","
-                                       << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ")\t"
-                                       << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.y
-                                       << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.m
-                                       << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.d
-                                       << ","
-                                       << y
-                                       << "/" << m
-                                       << "/" << d
-                                       << ")\t"
-                                       << "un_gain: 0"
-                                       << "\tungain_T: " << TotalStockDesc->un_gain
-                                       << "\tamount_T:" << TotalStockDesc->stockbuyamount
-                                       << endl;
+                            f_out_history << "\t" << StockInfoNow->stockname<<"\t" << StockInfoNow->stockname_ch << "\tINVALID SELL\t"
+                                          << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ","
+                                          << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ")\t"
+                                          << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.y
+                                          << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.m
+                                          << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.d
+                                          << ","
+                                          << y
+                                          << "/" << m
+                                          << "/" << d
+                                          << ")\t"
+                                          << "un_gain: 0"
+                                          << "\tungain_T: " << TotalStockDesc->un_gain
+                                          << "\tamount_T:" << TotalStockDesc->stockbuyamount
+                                          << endl;
 
-                         f_out_history << "Stock: " << StockInfoNow->stockname << " Buy Price " << StockInfoNow->price_buy[0].price
-                                       << " Date " << StockInfoNow->price_buy[0].date.y << StockInfoNow->price_buy[0].date.m << StockInfoNow->price_buy[0].date.d <<endl;
-                      }
-                      StockInfoNow->isupdate=0;
-                     ind++;
-                   }
+                            f_out_history << "Stock: " << StockInfoNow->stockname << " Buy Price " << StockInfoNow->price_buy[0].price
+                                          << " Date " << StockInfoNow->price_buy[0].date.y << StockInfoNow->price_buy[0].date.m << StockInfoNow->price_buy[0].date.d <<endl;
+                        }
+                        StockInfoNow->isupdate = 0;
+                        ind++;
+                    }
 
-                   if(TotalStockDesc->islastday == 1){
-                       //Sell the invalid stock
-                       TotalStockDesc->cnt_Notvalid = 0;
-                       ind = 0;
-                       STOCKINFO_t* StockInfoNow;
-                       while(ind<TotalStockDesc->stockamount){
-                          StockInfoNow = (STOCKINFO_t*)(TotalStockDesc->StockBasePtr + ind);//Get the stock now
-                          if(StockInfoNow->buy_amount){
-                             StockInfoNow->buy_amount--;
-                             TotalStockDesc->stockbuyamount--;
-                             TotalStockDesc->MoneyNeed -= StockInfoNow->price_buy[StockInfoNow->buy_amount].price;
-                             cout << "\t" << StockInfoNow->stockname<<"\t" << StockInfoNow->stockname_ch << "\tSELL LAST\t"
-                                  << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ","
-                                  << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ")\t"
-                                  << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.y
-                                  << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.m
-                                  << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.d
-                                  << ","
-                                  << y
-                                  << "/" << m
-                                  << "/" << d
-                                  << ")\t"
-                                  << "un_gain: 0"
-                                  << "\tungain_T: " << TotalStockDesc->un_gain
-                                  << "\tamount_T:" << TotalStockDesc->stockbuyamount
-                                  << endl;
-                             TotalStockDesc->cnt_Notvalid++;
-                             cout << "Stock: " << StockInfoNow->stockname << " Buy Price " << StockInfoNow->price_buy[0].price
-                                  << " Date " << StockInfoNow->price_buy[0].date.y << StockInfoNow->price_buy[0].date.m << StockInfoNow->price_buy[0].date.d <<endl;
-                          }
-                         ind++;
-                       }
-                   }
-                   memset(out_buffer,0,sizeof(out_buffer)/sizeof(char));
-                   sprintf(out_buffer, "%d/%d/%d,%f,%f,%f\n",y,m,d,TotalStockDesc->profit, TotalStockDesc->un_gain, TotalStockDesc->MoneyNeed);
-                   fwrite(out_buffer, sizeof(char), sizeof(out_buffer), f_out_gain);
-                   fin.close();
-                   fin.clear();
+                    if(TotalStockDesc->islastday == 1){
+                        //Sell the invalid stock
+                        TotalStockDesc->cnt_Notvalid = 0;
+                        ind = 0;
+                        STOCKINFO_t* StockInfoNow;
+                        while(ind<TotalStockDesc->stockamount){
+                            StockInfoNow = (STOCKINFO_t*)(TotalStockDesc->StockBasePtr + ind);//Get the stock now
+                            if(StockInfoNow->buy_amount){
+                                StockInfoNow->buy_amount--;
+                                TotalStockDesc->stockbuyamount--;
+                                TotalStockDesc->MoneyNeed -= StockInfoNow->price_buy[StockInfoNow->buy_amount].price;
+                                cout << "\t" << StockInfoNow->stockname<<"\t" << StockInfoNow->stockname_ch << "\tSELL LAST\t"
+                                     << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ","
+                                     << StockInfoNow->price_buy[StockInfoNow->buy_amount].price << ")\t"
+                                     << "(" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.y
+                                     << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.m
+                                     << "/" << StockInfoNow->price_buy[StockInfoNow->buy_amount].date.d
+                                     << ","
+                                     << y
+                                     << "/" << m
+                                     << "/" << d
+                                     << ")\t"
+                                     << "un_gain: 0"
+                                     << "\tungain_T: " << TotalStockDesc->un_gain
+                                     << "\tamount_T:" << TotalStockDesc->stockbuyamount
+                                     << endl;
+                                TotalStockDesc->cnt_Notvalid++;
+                                cout << "Stock: " << StockInfoNow->stockname << " Buy Price " << StockInfoNow->price_buy[0].price
+                                     << " Date " << StockInfoNow->price_buy[0].date.y << StockInfoNow->price_buy[0].date.m << StockInfoNow->price_buy[0].date.d <<endl;
+                            }
+                            ind++;
+                        }
+                    }
+                    memset(out_buffer,0,sizeof(out_buffer)/sizeof(char));
+                    sprintf(out_buffer, "%d/%d/%d,%f,%f,%f\n",y,m,d,TotalStockDesc->profit, TotalStockDesc->un_gain, TotalStockDesc->MoneyNeed);
+                    fwrite(out_buffer, sizeof(char), sizeof(out_buffer), f_out_gain);
+                    fin.close();
+                    fin.clear();
                 }
 
                 if(TotalStockDesc->islastday == 1)break;
